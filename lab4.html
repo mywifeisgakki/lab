@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Math Game</title>
+ <style>
+body{background-color: white;}
+.setup {width: 100%;
+	height:100px;
+	color: orange;
+	text-align: center;
+                line-height:50%;
+	font-size: 40px;}
+.one {width: 100%;
+	height:100px;
+	color: orange;
+	text-align: center;
+                line-height:50%;
+	font-size: 40px;}
+.two {width: 100%;
+	height:100px;
+	color: blue;
+	text-align: center;
+                line-height:50%;
+	font-size: 60px;}
+.three {width: 100%;
+	height:500px;
+	color: red;
+	text-align: center;
+                line-height:50%;
+	font-size: 100px;}
+.Main{
+   background-color:white;
+   width:600px;
+   height:900px;
+   padding:0px;
+   border:1px solid green;
+   }
+.button{width: 100px;
+                text-align: center;
+	height:100px;
+                border: 2px;
+                border-radius:5px;}
+.button:active{
+ box-shadow: 0 5px #666;
+ transform: translateY(4px);
+}
+.button:focus{
+ outline:none;
+}
+ </style>
+</head>
+
+<body>
+<div class="Main">
+<div class="setup" >
+<button class="button" id="+"  onclick="changeMode(this.id)" style="background: url(images/math_add.png); background-size: contain;"></button>
+<button class="button" id="-"  onclick="changeMode(this.id)" style="background: url(images/math_subtraction.png); background-size: contain;"></button>
+<button class="button" id="x"  onclick="changeMode(this.id)" style="background: url(images/math_multiply.png); background-size: contain;"></button>
+<button class="button" id="/"  onclick="changeMode(this.id)" style="background: url(images/math_division.png); background-size: contain;"></button>
+<input type="range" min="1" max="5" value="1" step="1" id="slider"><br>
+<span id="level" style="font-size: 20px;"></span>
+</div>
+<div class="one" ><p id="message">Quiz Starts!</p> <!--<p align="center">Quiz Starts!</p>--></div>
+<div class="two" ><p id="123"></p></div>
+<div class="three"><p>
+<button class="button" id="1" onclick="buttonPressed(this.id)" style="background: url(images/number1.png); background-size: contain;"></button>
+<button class="button" id="2" onclick="buttonPressed(this.id)" style="background: url(images/number2.png); background-size: contain;"></button>
+<button class="button" id="3" onclick="buttonPressed(this.id)" style="background: url(images/number3.png); background-size: contain;"></button><br>
+<button class="button" id="4" onclick="buttonPressed(this.id)" style="background: url(images/number4.png); background-size: contain;"></button>
+<button class="button" id="5" onclick="buttonPressed(this.id)" style="background: url(images/number5.png); background-size: contain;"></button>
+<button class="button" id="6" onclick="buttonPressed(this.id)" style="background: url(images/number6.png); background-size: contain;"></button><br>
+<button class="button" id="7" onclick="buttonPressed(this.id)" style="background: url(images/number7.png); background-size: contain;"></button>
+<button class="button" id="8" onclick="buttonPressed(this.id)" style="background: url(images/number8.png); background-size: contain;"></button>
+<button class="button" id="9" onclick="buttonPressed(this.id)" style="background: url(images/number9.png); background-size: contain;"></button><br>
+<button class="button" id="0" onclick="buttonPressed(this.id)" style="background: url(images/number0.png); background-size: contain;"></button>
+<button class="button" onclick="checkAnswer()" style="background: url(images/enter.png); background-size: contain;"></button></p>
+</div>
+
+<script>
+var mode="+";
+slider = document.getElementById("slider");
+document.getElementById("level").innerHTML = slider.value;
+slider.oninput = function(){
+document.getElementById("level").innerHTML = this.value;
+}
+function changeMode(buttonID){
+mode = buttonID;
+newQuiz();
+}
+
+var userInput = "";
+var left= Math.floor((Math.random()*20)+1);
+var right= Math.floor((Math.random()*20)+1);
+var A;
+var B;
+A = left;
+B=right;
+if(right >= left){
+left = B;
+right = A;
+}
+document.getElementById("123").innerHTML = left+mode+right+"=?"; 
+console.log(left,right);
+
+function newQuiz(){
+var max = 5*slider.value;
+var min = 1+5*(slider.value-1);
+left = Math.floor(Math.random() * (max - min + 1)) + min;
+A = left;
+right = Math.floor(Math.random() * (max - min + 1)) + min;
+B=right;
+if(right >= left){
+left = B;
+right = A;
+}
+document.getElementById("123").innerHTML = left +mode+ right+" = ?";
+}
+
+function buttonPressed(buttonID){
+userInput = userInput + buttonID;
+document.getElementById("123").innerHTML = left +mode+ right+" = "+userInput;
+}
+
+function checkAnswer() { 
+var answer = userInput;
+var result;
+switch(mode) {
+ case "-":
+ result = left-right;
+ break;
+ case "x":
+ result = left*right;
+ break;
+ case "/":
+ result = Math.trunc(left/right);
+ break;
+ default:
+ result = left+right;
+ }
+if(result.toString() == answer)
+{document.getElementById("message").innerHTML = "<span style='color: green;'>Good!</span>";userInput = "";newQuiz();}
+else
+{document.getElementById("message").innerHTML = "Wrong!";userInput = "";} 
+}
+
+</script>
+</body>
+</html>
